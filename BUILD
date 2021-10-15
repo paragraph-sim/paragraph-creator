@@ -17,6 +17,19 @@ cc_binary(
     visibility = ["//visibility:public"],
 )
 
+cc_binary(
+    name = "allreduce",
+    srcs = ["src/allreduce_generator/allreduce.cc"],
+    copts = ["-UNDEBUG"],
+    deps = [
+        "@paragraph//paragraph/graph",
+        "@com_google_absl//absl/flags:flag",
+        "@com_google_absl//absl/flags:parse",
+        "@com_google_protobuf//:protobuf",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 genrule(
     name = "lint",
     srcs = glob([
