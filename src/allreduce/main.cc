@@ -26,7 +26,7 @@
  * for `loop_count` iterations. Within each loop, there is a single delay
  * instruction with delay `time_delay` followed by All-Reduce of size
  * `reduction_size`. Two instructions can be overlapped (executed concurrently)
- * based on `comm_verlap` flag`. Computation time for AAll-Reduce is computed
+ * based on `comm_overlap` flag`. Computation time for All-Reduce is computed
  * based on reduction size and numerical data format size `format_size`.
  */
 ABSL_FLAG(int, num_proc, 8, "Number of processors.");
