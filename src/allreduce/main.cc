@@ -22,9 +22,17 @@
 #include "paragraph/graph/graph.h"
 #include "paragraph/shim/macros.h"
 
+/* All-Reduce generator creates a simple graph that runs All-Reduce in the loop
+ * for `loop_count` iterations. Within each loop, there is a single delay
+ * instruction with delay `time_delay` followed by All-Reduce of size
+ * `reduction_size`. Two instructions can be overlapped (executed concurrently)
+ * based on `comm_verlap` flag`. Computation time for AAll-Reduce is computed
+ * based on reduction size and numerical data format size `format_size`.
+ */
 ABSL_FLAG(int, num_proc, 8, "Number of processors.");
 ABSL_FLAG(int, loop_count, 1, "Number of All-Reduce iterations.");
-ABSL_FLAG(double, size, 1024 * 1024, "All-Reduce size, in bytes.");
+ABSL_FLAG(double, reduction_size, 1024 * 1024, "All-Reduce size, in bytes.");
+ABSL_FLAG(double, format_size, 4, "Data format size for All-Reduce, in bytes.");
 ABSL_FLAG(double, time_delay, 1e-6,
           "Compute delay for non All-Reduce part, in seconds..");
 ABSL_FLAG(bool, comm_overlap, false,
@@ -37,7 +45,8 @@ int32_t main(int32_t argc, char** argv) {
   std::filesystem::path output_graph_file = absl::GetFlag(FLAGS_output_graph);
   int num_proc = absl::GetFlag(FLAGS_num_proc);
   int loop_count = absl::GetFlag(FLAGS_loop_count);
-  double ar_size = absl::GetFlag(FLAGS_size);
+  double ar_size = absl::GetFlag(FLAGS_reduction_size);
+  double numerical_size = absl::GetFlag(FLAGS_format_size);
   double time_delay = absl::GetFlag(FLAGS_time_delay);
   bool is_overlapped = absl::GetFlag(FLAGS_comm_overlap);
   CHECK_NE(output_graph_file, "");
@@ -89,7 +98,7 @@ int32_t main(int32_t argc, char** argv) {
   CHECK_OK_AND_ASSIGN(
       auto sum_op, paragraph::Instruction::Create(paragraph::Opcode::kDelay,
                                                   "sum", reduction_ptr, true));
-  sum_op->SetOps(ar_size / 4);
+  sum_op->SetOps(ar_size / numerical_size);
   sum_op->AddOperand(op1);
   sum_op->AddOperand(op2);
   allreduce_inst->AppendInnerSubroutine(std::move(reduction_sub));

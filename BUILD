@@ -19,7 +19,7 @@ cc_binary(
 
 cc_binary(
     name = "allreduce",
-    srcs = ["src/allreduce_generator/allreduce.cc"],
+    srcs = ["src/allreduce/main.cc"],
     copts = ["-UNDEBUG"],
     deps = [
         "@paragraph//paragraph/graph",
