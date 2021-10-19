@@ -40,6 +40,15 @@
 #include "prim/prim.h"
 #include "tclap/CmdLine.h"
 
+// This ParaGraph creator models the 27-Point Stencil workload described in
+// detail in Section 6.2 here:
+// https://www.nicm.dev/pubs/nicmcdonald_hxrouting_sc_2019.pdf
+//
+// Unlike the paper version, this one does NOT specify the type of all-reduce
+// used. Instead it leaves a generic all-reduce instruction in the ParaGraph.
+// This allows the user to use ParaGraph translation to further extrapolate
+// any algorithm desired for the collective operation.
+
 #define HALO_INSTS 26
 #define FACE_XN 0
 #define FACE_XP 1
