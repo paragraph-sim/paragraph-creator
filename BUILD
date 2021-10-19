@@ -76,6 +76,9 @@ sh_test(
     srcs = ["test/stencil.sh"],
     data = [
         ":stencil",
+        "test/stencil_translation.json",
+        "@paragraph//paragraph/simulator:simulator",
+        "@paragraph//paragraph/translation:graph_translator",
     ],
     visibility = ["//visibility:public"],
 )
