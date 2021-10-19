@@ -6,7 +6,7 @@ exports_files([
 ])
 
 cc_binary(
-    name = "pgstencil",
+    name = "stencil",
     srcs = ["src/stencil/main.cc"],
     copts = ["-UNDEBUG"],
     deps = [
@@ -67,6 +67,15 @@ genrule(
     """,
     tools = [
         "@clang_format//file",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+sh_test(
+    name = "stencil_test",
+    srcs = ["test/stencil.sh"],
+    data = [
+        ":stencil",
     ],
     visibility = ["//visibility:public"],
 )
