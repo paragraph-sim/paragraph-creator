@@ -76,7 +76,7 @@ sh_test(
     srcs = ["test/stencil.sh"],
     data = [
         ":stencil",
-        "test/stencil_translation.json",
+        "test/unidir_ring_push_translation.json",
         "@paragraph//paragraph/simulator:simulator",
         "@paragraph//paragraph/translation:graph_translator",
     ],
@@ -88,7 +88,7 @@ sh_test(
     srcs = ["test/allreduce.sh"],
     data = [
         ":allreduce",
-        "test/stencil_translation.json",
+        "test/unidir_ring_push_translation.json",
         "@paragraph//paragraph/simulator:simulator",
         "@paragraph//paragraph/translation:graph_translator",
     ],

@@ -42,7 +42,7 @@ fi
 # Individualizes the stencil
 external/paragraph/paragraph/translation/graph_translator \
     --input_graph some_cool_stencil.textproto \
-    --translation_config test/stencil_translation.json \
+    --translation_config test/unidir_ring_push_translation.json \
     --output_dir . \
     --check_consecutive_natural_processor_ids
 

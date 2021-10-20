@@ -62,7 +62,7 @@ fi
 # Individualizes the allreduce
 external/paragraph/paragraph/translation/graph_translator \
     --input_graph allreduce.textproto \
-    --translation_config test/stencil_translation.json \
+    --translation_config test/unidir_ring_push_translation.json\
     --output_dir . \
     --check_consecutive_natural_processor_ids
 
