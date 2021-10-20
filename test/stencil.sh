@@ -33,7 +33,7 @@ REDUCTION_SECS=1e-7
 # Check that the output file has the right number of nodes
 test -f some_cool_stencil.textproto
 let EXP=${X_NODES}*${Y_NODES}*${Z_NODES}
-ACT=$(grep group_ids some_cool_stencil.textproto | tr -s ' ' | sort | uniq | wc -l)
+ACT=$(grep group_ids some_cool_stencil.textproto | tr -s ' ' | sort | uniq | wc -l | xargs)
 if [ "${ACT}" != "${EXP}" ]; then
     echo "Instead of ${EXP} node found, there were ${ACT}"
     exit -1
@@ -42,7 +42,7 @@ fi
 # Individualizes the stencil
 external/paragraph/paragraph/translation/graph_translator \
     --input_graph some_cool_stencil.textproto \
-    --translation_config test/stencil_translation.json \
+    --translation_config test/unidir_ring_push_translation.json \
     --output_dir . \
     --check_consecutive_natural_processor_ids
 
