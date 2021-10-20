@@ -33,7 +33,7 @@ REDUCTION_SECS=1e-7
 # Check that the output file has the right number of nodes
 test -f some_cool_stencil.textproto
 let EXP=${X_NODES}*${Y_NODES}*${Z_NODES}
-ACT=$(grep group_ids some_cool_stencil.textproto | tr -s ' ' | sort | uniq | wc -l)
+ACT=$(grep group_ids some_cool_stencil.textproto | tr -s ' ' | sort | uniq | wc -l | xargs)
 if [ "${ACT}" != "${EXP}" ]; then
     echo "Instead of ${EXP} node found, there were ${ACT}"
     exit -1
