@@ -87,7 +87,7 @@ struct Cube {
     assert(_x < xn_);
     assert(_y < yn_);
     assert(_z < zn_);
-    u32 i = (((zn_ * yn_) * _z) + (yn_ * _y) + (_x));
+    u32 i = (_z * yn_ * xn_) + (_y * xn_) + (_x);
     assert(i < (zn_ * yn_ * xn_));
     return i;
   }
