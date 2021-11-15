@@ -73,7 +73,7 @@ int32_t main(int32_t argc, char** argv) {
   CHECK_OK_AND_ASSIGN(
       auto allreduce_inst,
       paragraph::Instruction::Create(paragraph::Opcode::kAllReduce, "allreduce",
-                                     body_sub_ptr, true));
+                                     body_sub_ptr));
   if (!is_overlapped) {
     allreduce_inst->AddOperand(compute_inst);
   }
@@ -103,6 +103,12 @@ int32_t main(int32_t argc, char** argv) {
   sum_op->AddOperand(op2);
   allreduce_inst->AppendInnerSubroutine(std::move(reduction_sub));
 
+  CHECK_OK_AND_ASSIGN(auto body_root,
+      paragraph::Instruction::Create(paragraph::Opcode::kNull, "body_root",
+                                     body_sub_ptr, true));
+  body_root->AddOperand(compute_inst);
+  body_root->AddOperand(allreduce_inst);
+
   auto cond_sub =
       absl::make_unique<paragraph::Subroutine>("cond_subroutine", graph.get());
   auto cond_sub_ptr = cond_sub.get();
@@ -116,7 +122,7 @@ int32_t main(int32_t argc, char** argv) {
   CHECK_OK_AND_ASSIGN(auto root_instr, paragraph::Instruction::Create(
                                            paragraph::Opcode::kNull, "root",
                                            main_sub_ptr, true));
-  root_instr->SetOps(1);
+  root_instr->AddOperand(while_instr);
 
   // Writing output graph
   CHECK_OK(graph->WriteToFile(output_graph_file));
